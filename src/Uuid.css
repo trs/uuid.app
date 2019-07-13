@@ -1,0 +1,46 @@
+.uuid-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.uuid-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 12px 10px;
+  cursor: pointer;
+
+  height: 50px;
+  min-width: 50px;
+}
+
+.uuid-container:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.uuid-container:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+  border-left: 1px solid rgba(255, 255, 255, .6);
+}
+
+.uuid-container:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+.uuid-icon {
+  font-size: inherit;
+  text-align: center;
+}
+
+.uuid-value {
+  display: block;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+  padding-left: 8px;
+}

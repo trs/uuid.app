@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import v4 from 'uuid/v4';
-import copy from 'copy-to-clipboard';
+import Clipboard from 'clipboard';
 import './Uuid.css';
 
 enum Icon {
@@ -16,10 +16,19 @@ enum Status {
 }
 
 const Uuid: React.FC = () => {
+  const [, setClipboard] = useState<Clipboard>();
   const [uuid, setUuid] = useState(v4());
   const [copied, setCopied] = useState<boolean | undefined>(undefined);
   const [icon, setIcon] = useState(Icon.Copy);
   const [statusClass, setStatusClass] = useState(Status.Idle);
+
+  useEffect(() => {
+    const clipboard = new Clipboard('.uuid-copy');
+    clipboard.on('error', () => setCopied(false));
+    clipboard.on('success', () => setCopied(true));
+
+    setClipboard(clipboard);
+  }, []);
 
   useEffect(() => {
     if (copied === true) setIcon(Icon.Success);
@@ -33,11 +42,6 @@ const Uuid: React.FC = () => {
     else setStatusClass(Status.Idle);
   }, [statusClass, copied]);
 
-  const copyToClipboard = () => {
-    const success = copy(uuid, {format: 'plain/text'});
-    setCopied(success);
-  };
-
   const refreshUuid = () => {
     setCopied(undefined);
     setUuid(v4());
@@ -45,7 +49,7 @@ const Uuid: React.FC = () => {
 
   return (
     <div className="uuid-wrapper">
-      <div className="uuid-container uuid-copy" onClick={copyToClipboard}>
+      <div className="uuid-container uuid-copy" data-clipboard-text={uuid}>
         <i className={['uuid-icon', 'material-icons', statusClass].filter(Boolean).join(' ')}>{icon}</i>
         <p className="uuid-value">{uuid}</p>
       </div>

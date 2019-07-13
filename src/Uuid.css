@@ -10,11 +10,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  padding: 12px 10px;
   cursor: pointer;
 
-  height: 50px;
-  min-width: 50px;
+  padding: calc(6px + .5vw) calc(4px + .5vw);
+  height: calc(10px + 4vw);
+  min-width: calc(10px + 3vw);
 }
 
 .uuid-container:first-child {
@@ -36,11 +36,38 @@
 .uuid-icon {
   font-size: inherit;
   text-align: center;
+  color: #61dafb;
 }
 
 .uuid-value {
   display: block;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
-  padding-left: 8px;
+  padding: 0 calc(2px + .2vw);
+  word-break: break-all;
+}
+
+.uuid-status--success {
+  color: #38a169;
+}
+
+.uuid-status--error {
+  color: #e53e2e;
+}
+
+@media screen and (max-width: 500px) {
+  .uuid-container {
+    font-size: 14px;
+    padding: 8px 6px;
+    height: 30px;
+    min-width: 30px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .uuid-container {
+    padding: calc(6px + .25vw) calc(4px + .25vw);
+    height: calc(32px + 2vw);
+    min-width: calc(32px + 2vw);
+  }
 }

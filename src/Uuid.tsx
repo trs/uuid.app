@@ -18,39 +18,50 @@ enum Status {
 const Uuid: React.FC = () => {
   const [, setClipboard] = useState<Clipboard>();
   const [uuid, setUuid] = useState(v4());
-  const [copied, setCopied] = useState<boolean | undefined>(undefined);
-  const [icon, setIcon] = useState(Icon.Copy);
-  const [statusClass, setStatusClass] = useState(Status.Idle);
+  const [copySupported, setCopySupported] = useState(true);
+  const [copySuccessful, setCopySuccessful] = useState<boolean | undefined>(undefined);
+  const [copyIcon, setCopyIcon] = useState(Icon.Copy);
+  const [copyStatusClassName, setCopyStatusClassName] = useState(Status.Idle);
 
   useEffect(() => {
+    if (!Clipboard.isSupported()) {
+      setCopySupported(false);
+      return;
+    }
+
     const clipboard = new Clipboard('.uuid-copy');
-    clipboard.on('error', () => setCopied(false));
-    clipboard.on('success', () => setCopied(true));
+    clipboard.on('error', () => setCopySuccessful(false));
+    clipboard.on('success', () => setCopySuccessful(true));
 
     setClipboard(clipboard);
+
+    return () => clipboard.destroy();
   }, []);
 
   useEffect(() => {
-    if (copied === true) setIcon(Icon.Success);
-    else if (copied === false) setIcon(Icon.Error);
-    else setIcon(Icon.Copy);
-  }, [copied]);
+    if (copySuccessful === true) setCopyIcon(Icon.Success);
+    else if (copySuccessful === false) setCopyIcon(Icon.Error);
+    else setCopyIcon(Icon.Copy);
+  }, [copySuccessful]);
 
   useEffect(() => {
-    if (copied === true) setStatusClass(Status.Success);
-    else if (copied === false) setStatusClass(Status.Error);
-    else setStatusClass(Status.Idle);
-  }, [statusClass, copied]);
+    if (copySuccessful === true) setCopyStatusClassName(Status.Success);
+    else if (copySuccessful === false) setCopyStatusClassName(Status.Error);
+    else setCopyStatusClassName(Status.Idle);
+  }, [copyStatusClassName, copySuccessful]);
 
   const refreshUuid = () => {
-    setCopied(undefined);
+    setCopySuccessful(undefined);
     setUuid(v4());
   };
 
   return (
     <div className="uuid-wrapper">
-      <div className="uuid-container uuid-copy" data-clipboard-text={uuid}>
-        <i className={['uuid-icon', 'material-icons', statusClass].filter(Boolean).join(' ')}>{icon}</i>
+      <div className={['uuid-container', 'uuid-copy', !copySupported ? 'uuid-container--ignore-hover' : ''].filter(Boolean).join(' ')} data-clipboard-text={uuid}>
+        {copySupported ?
+          <i className={['uuid-icon', 'material-icons', copyStatusClassName].filter(Boolean).join(' ')}>{copyIcon}</i>
+          : ''
+        }
         <p className="uuid-value">{uuid}</p>
       </div>
       <div className="uuid-container uuid-refresh" onClick={refreshUuid}>

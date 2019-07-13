@@ -7,10 +7,6 @@
   ],
   "builds": [
     {
-      "src": "api/*.ts",
-      "use": "@now/node"
-    },
-    {
       "src": "package.json",
       "use": "@now/static-build",
       "config": {
@@ -19,10 +15,6 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/v4",
-      "dest": "/api/v4.ts"
-    },
     {
       "src": "/static/(.*)",
       "headers": {

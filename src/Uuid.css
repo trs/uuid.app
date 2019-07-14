@@ -31,7 +31,7 @@
 }
 
 .uuid-container:hover:not(.uuid-container--ignore-hover) {
-  border: 2px solid transparent;
+  border-color: transparent;
   background: rgba(255, 255, 255, .2);
 }
 
@@ -61,6 +61,10 @@
   cursor: pointer;
 }
 
+.uuid-icon-rotate {
+  animation: rotate-keyframes 150ms;
+}
+
 .uuid-status--success {
   color: #38a169;
 }
@@ -68,6 +72,16 @@
 .uuid-status--error {
   color: #e53e2e;
 }
+
+@keyframes rotate-keyframes {
+  from {
+   transform: rotate(0deg);
+  }
+
+  to {
+   transform: rotate(360deg);
+  }
+ }
 
 @media screen and (max-width: 500px) {
   .uuid-container {

@@ -5,38 +5,42 @@
 }
 
 .uuid-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
 
   transition: background 150ms;
 
-  padding: calc(6px + .5vw) calc(4px + .5vw);
-  height: calc(10px + 4vw);
-  min-width: calc(10px + 3vw);
+  background-color: #282c34;
+
+  height: calc(8px + 3.5vw);
+  min-width: calc(8px + 3.5vw);
 }
 
 .uuid-container:first-child {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 2px solid rgba(0, 0, 0, .2);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .uuid-container:last-child {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
-.uuid-container:hover:not(.uuid-container--ignore-hover) {
+.uuid-button {
+  background: rgba(0, 0, 0, .2);
+  cursor: pointer;
+}
+
+.uuid-button:hover {
   border-color: transparent;
   background: rgba(255, 255, 255, .2);
 }
 
 .uuid-icon {
-  font-size: inherit;
+  font-size: calc(10px + .8vw);
   text-align: center;
   color: #61dafb;
 
@@ -48,21 +52,26 @@
   user-select: none;
 }
 
+.uuid-icon-rotate {
+  animation: rotate-keyframes 250ms;
+}
+
 .uuid-value {
-  display: block;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
-  padding: 0 calc(2px + .3vw);
+  padding: 0 calc(6px + .5vw);
   word-break: break-all;
+  background: rgba(255, 255, 255, .05);
+  /* border: 2px solid rgba(0, 0, 0, .2); */
 }
 
-.uuid-refresh {
-  background: rgba(0, 0, 0, .2);
-  cursor: pointer;
-}
-
-.uuid-icon-rotate {
-  animation: rotate-keyframes 150ms;
+.uuid-refresh > span {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .uuid-status--success {
@@ -74,19 +83,22 @@
 }
 
 @keyframes rotate-keyframes {
-  from {
+  0% {
    transform: rotate(0deg);
   }
 
-  to {
-   transform: rotate(360deg);
+  80% {
+   transform: rotate(382deg);
   }
+
+  100% {
+    transform: rotate(360deg);
+   }
  }
 
 @media screen and (max-width: 500px) {
   .uuid-container {
     font-size: 14px;
-    padding: 8px 6px;
     height: 30px;
     min-width: 30px;
   }
@@ -94,8 +106,20 @@
 
 @media screen and (min-width: 1200px) {
   .uuid-container {
-    padding: calc(6px + .25vw) calc(4px + .25vw);
+    font-size: calc(18px + 1vw);
     height: calc(32px + 2vw);
     min-width: calc(32px + 2vw);
+  }
+}
+
+@media screen and (min-width: 2600px) {
+  .uuid-container {
+    font-size: 44px;
+    height: 82px;
+    min-width: 82px;
+  }
+
+  .uuid-icon {
+    font-size: 32px;
   }
 }

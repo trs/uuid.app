@@ -1,21 +1,26 @@
-import React, { useState, useEffect, createRef } from 'react';
-import v4 from 'uuid/v4';
-import Clipboard from 'clipboard';
-import './Uuid.css';
+import React, { useState, useEffect, createRef } from "react";
+import v4 from "uuid/v4";
+import Clipboard from "clipboard";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRedoAlt, faClone, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import "./Uuid.css";
+
+library.add(faRedoAlt, faClone, faCheck, faTimes);
 
 enum Icon {
-  Copy = 'file_copy',
-  Success = 'check',
-  Error = 'clear'
+  Copy = "clone",
+  Success = "check",
+  Error = "times"
 }
 
 enum Status {
-  Idle = '',
-  Success = 'uuid-status--success',
-  Error = 'uuid-status--error'
+  Idle = "",
+  Success = "uuid-status--success",
+  Error = "uuid-status--error"
 }
 
-const ICON_ROTATE_CLASS_NAME = 'uuid-icon-rotate';
+const ICON_ROTATE_CLASS_NAME = "uuid-icon-rotate";
 
 const Uuid: React.FC = () => {
   const [, setClipboard] = useState<Clipboard>();
@@ -24,7 +29,7 @@ const Uuid: React.FC = () => {
   const [copySuccessful, setCopySuccessful] = useState<boolean | undefined>(undefined);
   const [copyIcon, setCopyIcon] = useState(Icon.Copy);
   const [copyStatusClassName, setCopyStatusClassName] = useState(Status.Idle);
-  const refreshIcon = createRef<HTMLElement>();
+  const refreshIconRef = createRef<HTMLElement>();
 
   useEffect(() => {
     if (!Clipboard.isSupported()) {
@@ -32,9 +37,9 @@ const Uuid: React.FC = () => {
       return;
     }
 
-    const clipboard = new Clipboard('.uuid-copy');
-    clipboard.on('error', () => setCopySuccessful(false));
-    clipboard.on('success', () => setCopySuccessful(true));
+    const clipboard = new Clipboard(".uuid-copy");
+    clipboard.on("error", () => setCopySuccessful(false));
+    clipboard.on("success", () => setCopySuccessful(true));
 
     setClipboard(clipboard);
 
@@ -57,24 +62,29 @@ const Uuid: React.FC = () => {
     setCopySuccessful(undefined);
     setUuid(v4());
 
-    if (!refreshIcon.current) return;
+    if (!refreshIconRef.current) return;
 
-    const {classList} = refreshIcon.current;
+    const {classList} = refreshIconRef.current;
     classList.add(ICON_ROTATE_CLASS_NAME);
-    setTimeout(() => classList.remove(ICON_ROTATE_CLASS_NAME), 150);
+    setTimeout(() => classList.remove(ICON_ROTATE_CLASS_NAME), 250);
   };
 
   return (
     <div className="uuid-wrapper">
-      <div className={['uuid-container', 'uuid-copy', !copySupported ? 'uuid-container--ignore-hover' : ''].filter(Boolean).join(' ')} data-clipboard-text={uuid}>
-        {copySupported ?
-          <i className={['uuid-icon', 'material-icons', copyStatusClassName].filter(Boolean).join(' ')}>{copyIcon}</i>
-          : ''
-        }
-        <p className="uuid-value">{uuid}</p>
+      <div className="uuid-container uuid-value">
+        {uuid}
       </div>
-      <div className="uuid-container uuid-refresh" onClick={refreshUuid}>
-        <i className="uuid-icon material-icons" ref={refreshIcon}>refresh</i>
+      {copySupported ?
+        <div className="uuid-container uuid-button uuid-copy" data-clipboard-target=".uuid-value">
+          <FontAwesomeIcon icon={copyIcon} className={["uuid-icon", "material-icons", copyStatusClassName].filter(Boolean).join(" ")} />
+        </div>
+        : ""
+      }
+      <div className="uuid-container uuid-button uuid-refresh" onClick={refreshUuid}>
+        <span ref={refreshIconRef}>
+          <FontAwesomeIcon icon="redo-alt" className="uuid-icon material-icons" />
+        </span>
+        {/* <i className="uuid-icon material-icons" ref={refreshIconRef}>refresh</i> */}
       </div>
     </div>
   );

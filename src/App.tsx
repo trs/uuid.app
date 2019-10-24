@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <Uuid />
       </div>
       <div className="footer">
-        <a href="https://github.com/trs/getuuid" target="_blank">
+        <a href="https://github.com/trs/getuuid" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faGithubAlt} />
         </a>
       </div>

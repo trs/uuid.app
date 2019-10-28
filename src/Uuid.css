@@ -59,10 +59,12 @@
 .uuid-value {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-variant-numeric: tabular-nums;
+  font-size: inherit;
   padding: 0 calc(6px + .5vw);
   word-break: break-all;
   background: rgba(255, 255, 255, .05);
-  /* border: 2px solid rgba(0, 0, 0, .2); */
+  color: inherit;
+  border: none;
 }
 
 .uuid-refresh > span {
@@ -70,6 +72,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.uuid-version {
+  font-style: italic;
+  font-weight: bold;
 }
 
 .uuid-status--success {

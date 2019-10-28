@@ -1,6 +1,8 @@
 import React, { useState, useEffect, createRef } from "react";
+import v1 from "uuid/v1";
 import v4 from "uuid/v4";
-import Clipboard from "clipboard";
+import {useClipboard} from './Hooks/useClipboard';
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRedoAlt, faClone, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -22,29 +24,28 @@ enum Status {
 
 const ICON_ROTATE_CLASS_NAME = "uuid-icon-rotate";
 
+type UuidVersion = 'v1' | 'v4';
+
+const generateUuid = (version: UuidVersion) => {
+  switch (version) {
+    case 'v1': return v1();
+    case 'v4': return v4();
+    default: throw new Error(`Unsupported UUID Version: ${version}`);
+  }
+};
+
 const Uuid: React.FC = () => {
-  const [, setClipboard] = useState<Clipboard>();
-  const [uuid, setUuid] = useState(v4());
-  const [copySupported, setCopySupported] = useState(true);
-  const [copySuccessful, setCopySuccessful] = useState<boolean | undefined>(undefined);
+  const [version, setVersion] = useState<UuidVersion>('v4');
+  const [uuid, setUuid] = useState(generateUuid(version));
   const [copyIcon, setCopyIcon] = useState(Icon.Copy);
+  const [copySuccessful, setCopySuccessful] = useState<boolean | null>(null);
   const [copyStatusClassName, setCopyStatusClassName] = useState(Status.Idle);
   const refreshIconRef = createRef<HTMLElement>();
+  const uuidElementRef = createRef<HTMLInputElement>();
 
-  useEffect(() => {
-    if (!Clipboard.isSupported()) {
-      setCopySupported(false);
-      return;
-    }
+  const [setClipboard] = useClipboard();
 
-    const clipboard = new Clipboard(".uuid-copy");
-    clipboard.on("error", () => setCopySuccessful(false));
-    clipboard.on("success", () => setCopySuccessful(true));
-
-    setClipboard(clipboard);
-
-    return () => clipboard.destroy();
-  }, []);
+  const copySupported = true;
 
   useEffect(() => {
     if (copySuccessful === true) setCopyIcon(Icon.Success);
@@ -56,11 +57,29 @@ const Uuid: React.FC = () => {
     if (copySuccessful === true) setCopyStatusClassName(Status.Success);
     else if (copySuccessful === false) setCopyStatusClassName(Status.Error);
     else setCopyStatusClassName(Status.Idle);
-  }, [copyStatusClassName, copySuccessful]);
+  }, [copySuccessful]);
+
+  useEffect(() => {
+    setCopySuccessful(null);
+  }, [uuid]);
+
+  useEffect(() => {
+    setUuid(generateUuid(version));
+    document.title = `get uuid | ${version}`
+  }, [version]);
+
+  const copyUuid = () => {
+    const success = setClipboard(uuid);
+    setCopySuccessful(success);
+
+    const uuidElement = uuidElementRef.current;
+    if (!uuidElement) return;
+    uuidElement.select();
+  };
 
   const refreshUuid = () => {
-    setCopySuccessful(undefined);
-    setUuid(v4());
+    setCopySuccessful(null);
+    setUuid(generateUuid(version));
 
     if (!refreshIconRef.current) return;
 
@@ -69,22 +88,27 @@ const Uuid: React.FC = () => {
     setTimeout(() => classList.remove(ICON_ROTATE_CLASS_NAME), 250);
   };
 
+  const toggleVersion = () => {
+    if (version === 'v4') setVersion('v1');
+    else setVersion('v4');
+  };
+
   return (
     <div className="uuid-wrapper">
-      <div className="uuid-container uuid-value">
-        {uuid}
+      <div className="uuid-container uuid-button uuid-version" onClick={toggleVersion} >
+        <span className="uuid-icon">{version}</span>
       </div>
+      <input className="uuid-container uuid-value" type="text" readOnly size={uuid.length} value={uuid} ref={uuidElementRef} />
       {copySupported ?
-        <div className="uuid-container uuid-button uuid-copy" data-clipboard-target=".uuid-value">
-          <FontAwesomeIcon icon={copyIcon} className={["uuid-icon", "material-icons", copyStatusClassName].filter(Boolean).join(" ")} />
+        <div className="uuid-container uuid-button uuid-copy" onClick={copyUuid}>
+          <FontAwesomeIcon icon={copyIcon} className={["uuid-icon", copyStatusClassName].filter(Boolean).join(" ")} />
         </div>
         : ""
       }
       <div className="uuid-container uuid-button uuid-refresh" onClick={refreshUuid}>
         <span ref={refreshIconRef}>
-          <FontAwesomeIcon icon="redo-alt" className="uuid-icon material-icons" />
+          <FontAwesomeIcon icon="redo-alt" className="uuid-icon" />
         </span>
-        {/* <i className="uuid-icon material-icons" ref={refreshIconRef}>refresh</i> */}
       </div>
     </div>
   );

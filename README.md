@@ -1,5 +1,5 @@
-# getuuid.app
+# uuid.app
 
 Simple UUID generator app.
 
-https://getuuid.app
+https://uuid.app

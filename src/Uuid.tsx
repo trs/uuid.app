@@ -65,7 +65,7 @@ const Uuid: React.FC = () => {
 
   useEffect(() => {
     setUuid(generateUuid(version));
-    document.title = `get uuid | ${version}`
+    document.title = `uuid | ${version}`
   }, [version]);
 
   const copyUuid = () => {

@@ -1,6 +1,6 @@
 {
-  "name": "getuuid",
-  "version": "0.2.0",
+  "name": "uuid.app",
+  "version": "0.2.1",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
@@ -37,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "@now/node": "^1.0.2",
     "@types/clipboard": "^2.0.1",
     "@types/jest": "^24.0.19",
     "@types/node": "^12.11.5",

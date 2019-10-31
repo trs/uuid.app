@@ -1,11 +1,18 @@
 {
   "version": 2,
-  "name": "getuuid",
-  "alias": "getuuid.app",
+  "name": "uuid.app",
+  "alias": [
+    "uuid.app",
+    "getuuid.app"
+  ],
   "regions": [
     "pdx1"
   ],
   "builds": [
+    {
+      "src": "api/*.ts",
+      "use": "@now/node"
+    },
     {
       "src": "package.json",
       "use": "@now/static-build",
@@ -15,6 +22,11 @@
     }
   ],
   "routes": [
+    {
+      "src": "/api(?:$|/(.*))",
+      "dest": "/api/index.ts?count=$1",
+      "methods": ["GET"]
+    },
     {
       "src": "/static/(.*)",
       "headers": {
@@ -46,7 +58,7 @@
       "dest": "/service-worker.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/",
       "headers": {
         "cache-control": "s-maxage=0"
       },

@@ -35,6 +35,10 @@
   font-size: calc(16px + .5vw);
 }
 
+.footer > a {
+  margin: 0 16px;
+}
+
 a, a:visited, a:active, a:link {
   color: inherit;
   outline: none;

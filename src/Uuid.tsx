@@ -1,7 +1,5 @@
 import React, { useState, useEffect, createRef } from "react";
-import v1 from "uuid/v1";
-import v4 from "uuid/v4";
-import {useClipboard} from './Hooks/useClipboard';
+import {useClipboard, useUuid} from './Hooks';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,19 +22,8 @@ enum Status {
 
 const ICON_ROTATE_CLASS_NAME = "uuid-icon-rotate";
 
-type UuidVersion = 'v1' | 'v4';
-
-const generateUuid = (version: UuidVersion) => {
-  switch (version) {
-    case 'v1': return v1();
-    case 'v4': return v4();
-    default: throw new Error(`Unsupported UUID Version: ${version}`);
-  }
-};
-
 const Uuid: React.FC = () => {
-  const [version, setVersion] = useState<UuidVersion>('v4');
-  const [uuid, setUuid] = useState(generateUuid(version));
+  const [uuid, setUuid] = useUuid();
   const [copyIcon, setCopyIcon] = useState(Icon.Copy);
   const [copySuccessful, setCopySuccessful] = useState<boolean | null>(null);
   const [copyStatusClassName, setCopyStatusClassName] = useState(Status.Idle);
@@ -63,11 +50,6 @@ const Uuid: React.FC = () => {
     setCopySuccessful(null);
   }, [uuid]);
 
-  useEffect(() => {
-    setUuid(generateUuid(version));
-    document.title = `uuid | ${version}`
-  }, [version]);
-
   const copyUuid = () => {
     const success = setClipboard(uuid);
     setCopySuccessful(success);
@@ -79,7 +61,7 @@ const Uuid: React.FC = () => {
 
   const refreshUuid = () => {
     setCopySuccessful(null);
-    setUuid(generateUuid(version));
+    setUuid();
 
     if (!refreshIconRef.current) return;
 
@@ -88,16 +70,8 @@ const Uuid: React.FC = () => {
     setTimeout(() => classList.remove(ICON_ROTATE_CLASS_NAME), 250);
   };
 
-  const toggleVersion = () => {
-    if (version === 'v4') setVersion('v1');
-    else setVersion('v4');
-  };
-
   return (
     <div className="uuid-wrapper">
-      <div className="uuid-container uuid-button uuid-version" onClick={toggleVersion} >
-        <span className="uuid-icon">{version}</span>
-      </div>
       <input className="uuid-container uuid-value" type="text" readOnly size={uuid.length} value={uuid} ref={uuidElementRef} />
       {copySupported ?
         <div className="uuid-container uuid-button uuid-copy" onClick={copyUuid}>

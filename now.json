@@ -23,8 +23,23 @@
   ],
   "routes": [
     {
-      "src": "/api(?:$|/(.*))",
-      "dest": "/api/index.ts?count=$1",
+      "src": "\\/api\\/v1(?:\\/(\\d+)\\/?$|\\/?$)",
+      "dest": "/api/v1.ts?count=$1",
+      "methods": ["GET"]
+    },
+    {
+      "src": "\\/api\\/v4(?:\\/(\\d+)\\/?$|\\/?$)",
+      "dest": "/api/v4.ts?count=$1",
+      "methods": ["GET"]
+    },
+    {
+      "src": "\\/api\\/v5\\/(.+?)(?:\\/(\\d+)\\/?$|\\/?$)",
+      "dest": "/api/v5.ts?value=$1&count=$2",
+      "methods": ["GET"]
+    },
+    {
+      "src": "\\/api\\/v5\\/([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})\\/(.+?)(?:\\/(\\d+)\\/?$|\\/?$)",
+      "dest": "/api/v5.ts?namespace=$1&value=$2&count=$3",
       "methods": ["GET"]
     },
     {
@@ -58,7 +73,7 @@
       "dest": "/service-worker.js"
     },
     {
-      "src": "/",
+      "src": "(\\/|\\/api\\/?)",
       "headers": {
         "cache-control": "s-maxage=0"
       },

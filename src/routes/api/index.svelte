@@ -8,14 +8,15 @@
 
 <main
 	class="
-		flex flex-col items-center justify-center h-screen text-left
+		flex flex-col sm:items-center sm:justify-center h-screen text-left
 		text-white
 	"
 >
-	<div>
+	<div class="min-h-full sm:min-h-0">
 		<div class="
 			hidden
 			sm:block
+			sm:visible
 			self-start
 			py-4
 		">
@@ -38,9 +39,11 @@
 
 		<div class="
 			p-6
+			sm:mb-2
 			bg-black-500
-			ring-2 ring-purple-500
+			sm:ring-2 ring-purple-500
 			rounded-lg overflow-hidden
+			min-h-full sm:min-h-0
 		">
 			<section>
 				<h1 class="text-2xl sm:text-3xl">API</h1>

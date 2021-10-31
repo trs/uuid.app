@@ -1,6 +1,7 @@
 <script lang="ts">
   export let uuid;
 
+  import Wrap from '../components/wrap.svelte';
   import CopyButton from '../components/copyButton.svelte';
   import GenerateButton from '../components/generateButton.svelte';
 
@@ -19,12 +20,12 @@
 <div
   bind:this={containerElement}
   class="
-    ring-2 ring-purple-500
-    rounded-lg overflow-hidden
-    flex
-    h-10 sm:h-12 md:h-14
-    text-xl sm:text-2xl md:text-3xl
-    font-mono
+    xs:ring-2 ring-purple-500
+    rounded-lg
+    grid grid-cols-1 xs:grid-cols-[1fr,auto] grid-rows-[auto,auto] xs:grid-rows-1
+    justify-items-center
+    gap-3 xs:gap-0
+    h-8 xs:h-10 sm:h-12 md:h-14
     transition-all
     text-white whitespace-nowrap
   "
@@ -36,14 +37,29 @@
     size="36"
     readonly
     class="
+      font-mono
+      text-md xs:text-lg sm:text-xl md:text-2xl
+      rounded-lg xs:rounded-r-none
+      xs:ring-0 ring-2 ring-purple-500
       outline-none
       bg-black-500
-      px-2 sm:px-3 md:px-4
+      px-3 sm:px-3 md:px-4
+      py-2 sm:py-0
     "
   />
 
-  <CopyButton bind:input={inputElement} bind:click={highlight} />
-  <GenerateButton bind:uuid={uuid} />
+  <Wrap class="
+    xs:ring-0 ring-2 ring-purple-500
+    sm:ring-0
+    rounded-lg xs:rounded-r-0 xs:rounded-l-0
+  ">
+    <Wrap class="rounded-l-lg xs:rounded-none overflow-hidden">
+      <CopyButton bind:input={inputElement} bind:click={highlight} />
+    </Wrap>
+    <Wrap class="rounded-r-lg overflow-hidden">
+      <GenerateButton bind:uuid={uuid} />
+    </Wrap>
+  </Wrap>
 </div>
 
 <style>

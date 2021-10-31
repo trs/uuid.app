@@ -25,7 +25,8 @@
   on:click={click}
   class="
     bg-black-500
-    px-2 sm:px-3 md:px-4
+    px-3 sm:px-3 md:px-4
+    py-2 sm:py-0
     transition-colors
     text-purple-400
     hover:text-white

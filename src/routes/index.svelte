@@ -1,20 +1,13 @@
 <script context="module" lang="ts">
   import type {Load} from '@sveltejs/kit';
-  import { browser } from '$app/env';
 
   export const load: Load = async ({session}) => {
-    if (!browser) {
-      const {v4} = await import('$lib/uuid');
-      session.uuid = v4();
-    }
-
     return {
       props: {
         uuid: session.uuid
       }
     };
   };
-
 </script>
 
 <script lang="ts">

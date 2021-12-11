@@ -24,7 +24,7 @@
   on:mouseup={execute}
   on:click={click}
   class="
-    bg-black-500
+    bg-zinc-800
     px-3 sm:px-3 md:px-4
     py-2 sm:py-0
     transition-colors

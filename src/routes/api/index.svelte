@@ -22,7 +22,7 @@
 		">
 			<a href="/" class="
 				p-2
-				bg-black-500
+				bg-zinc-800
 				transition-colors
 				text-purple-500
 				hover:text-white
@@ -40,7 +40,7 @@
 		<div class="
 			p-6
 			sm:mb-2
-			bg-black-500
+			bg-zinc-800
 			sm:ring-2 ring-purple-500
 			rounded-lg overflow-hidden
 			min-h-full sm:min-h-0
@@ -164,7 +164,7 @@
 	}
 
 	code {
-		@apply p-1 bg-black-900 rounded-lg;
+		@apply p-1 bg-zinc-900 rounded-lg;
 	}
 
 	table {
@@ -172,6 +172,6 @@
 	}
 
 	th, td {
-		@apply p-2 border-2 bg-black-900 border-black-500;
+		@apply p-2 border-2 bg-zinc-900 border-zinc-800;
 	}
 </style>

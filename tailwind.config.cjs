@@ -2,34 +2,13 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss/defaultConfig').} */
 module.exports = {
-	mode: 'jit',
 	content: ['./src/**/*.{html,js,svelte,ts}'],
-	darkMode: 'media',
-	variants: {
-		extend: {
-			ringWidth: ['hover', 'active'],
-		}
-	},
 	theme: {
 		screens: {
       'xs': '475px',
       ...defaultTheme.screens,
 		},
 		extend: {
-			colors: {
-				'black': {
-					'50': '#f4f4f5',
-					'100': '#eaeaeb',
-					'200': '#c9cacc',
-					'300': '#a9abae',
-					'400': '#696b71',
-					'500': '#282c34',
-					'600': '#24282f',
-					'700': '#1e2127',
-					'800': '#181a1f',
-					'900': '#141619'
-				}
-			},
 			keyframes: {
 				'spin-start': {
 					'0%': {
@@ -79,7 +58,6 @@ module.exports = {
 				'nudge-start': 'nudge-start 100ms ease forwards',
 				'nudge-left': 'nudge-left 250ms ease-out infinite',
 			},
-
 		}
 	}
 };

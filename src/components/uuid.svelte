@@ -42,9 +42,10 @@
       rounded-lg xs:rounded-r-none
       xs:ring-0 ring-2 ring-purple-500
       outline-none
-      bg-black-500
+      bg-zinc-800
       px-3 sm:px-3 md:px-4
       py-2 sm:py-0
+      selection:bg-purple-500
     "
   />
 
@@ -61,9 +62,3 @@
     </Wrap>
   </Wrap>
 </div>
-
-<style>
-  input::selection {
-    @apply bg-purple-500;
-  }
-</style>
